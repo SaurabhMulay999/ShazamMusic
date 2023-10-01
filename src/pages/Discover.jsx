@@ -2,10 +2,16 @@ import { Error, Loader, SongCard } from '../components';
 import { genres } from '../assets/constants';
 import { useState } from 'react';
 import { useGetTopChartsQuery } from '../redux/services/shazamCore';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Discover() {
     const { data, isFetching, error } = useGetTopChartsQuery();
     const [genra, setGenra] = useState("");
+    const dispatch = useDispatch();
+    const {activeSong,isPlaying } = useSelector(function (store) {
+        return store.player;
+    });
+    
     console.log(data);
     function selectHandler(e) {
         e.preventDefault();
@@ -18,9 +24,7 @@ function Discover() {
     if (error) {
         return <Error />;
     }
-  
     
- 
     return (
         <div className='flex flex-col'>
             <div className='w-full flex justify-between items-center sm:flex-row flex-col mt-4 mb-10'>
@@ -39,7 +43,7 @@ function Discover() {
                 }
                 {
                     data?.map((song, i) => (
-                        <SongCard key={song.key} song={song} i={i}/>
+                        <SongCard isPlaying={isPlaying} activeSong={activeSong} key={song.key} song={song} i={i} data={data} />
                     ))
                 }
                 
