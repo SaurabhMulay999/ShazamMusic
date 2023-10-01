@@ -36,9 +36,14 @@ const Sidebar = () => {
         //mobile sidebar
       }
       <div className="absolute md:hidden block top-6 right-3">
-        {mobileMenuOpen?<RiCloseLine/>:<HiOutlineMenu/>}
-
+        {mobileMenuOpen ? <RiCloseLine onClick={()=>setMobileMenuOpen(false)} className='w-6 h-6 text-white mr-2' /> : <HiOutlineMenu onClick={()=>setMobileMenuOpen(true)} className='w-6 h-6 text-white mr-2' />}
       </div>
+      <div className={`absolute top-0 h-screen  w-2/3  bg-gradient-to-tl from-white/10 to-[#483d8b] backdrop:blur-lg z-10 p-6 md:hidden ${mobileMenuOpen? 'left-0':'-left-full'}`}>
+        <img src={logo} alt="logo" className="w-full h-24 object-contain" />
+        <h2 className="text-white font-mono font-bold text-center text-2xl">SHAZAM</h2>
+        <NavLinks handleClick={()=>setMobileMenuOpen(false)}/>
+      </div>
+
     </>
   )
 };
