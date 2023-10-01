@@ -1,12 +1,26 @@
 import { Error, Loader, SongCard } from '../components';
 import { genres } from '../assets/constants';
 import { useState } from 'react';
+import { useGetTopChartsQuery } from '../redux/services/shazamCore';
 
 function Discover() {
+    const { data, isFetching, error } = useGetTopChartsQuery();
+    const [genra, setGenra] = useState("");
+    console.log(data);
     function selectHandler(e) {
+        e.preventDefault();
         setGenra(e.target.value);
     }
-    const [genra, setGenra] = useState("");
+    if (isFetching) {
+       
+        return <Loader title={'loading Songs....'} />
+    }
+    if (error) {
+        return <Error />;
+    }
+  
+    
+ 
     return (
         <div className='flex flex-col'>
             <div className='w-full flex justify-between items-center sm:flex-row flex-col mt-4 mb-10'>
@@ -23,8 +37,11 @@ function Discover() {
                 {
                 //showing the songs data here that we are goin to fetch from API
                 }
-                
-
+                {
+                    data?.map((song, i) => (
+                        <SongCard key={song.key} song={song} i={i}/>
+                    ))
+                }
                 
             </div>
         </div>
